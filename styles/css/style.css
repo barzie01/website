@@ -74,6 +74,21 @@ header h2 {
 section {
   margin: 50px 20px; }
 
+.btn {
+  margin: 10px 0;
+  border-radius: 5px;
+  border-color: #333333;
+  color: #333333;
+  background-color: #dddddd;
+  cursor: pointer; }
+
+input {
+  margin: 10px 0; }
+
+.container:nth-of-type(2) {
+  max-height: 100vh;
+  overflow: scroll; }
+
 .container__heading,
 .side-container__heading {
   text-align: center;
@@ -96,6 +111,9 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center; }
+
+table {
+  font-size: 8px; }
 
 .container__content {
   margin-top: 50px;
@@ -178,6 +196,8 @@ footer {
     font-size: 17px; }
   section {
     margin: 80px 40px; }
+  table {
+    font-size: 14px; }
   .container__heading,
   .side-container__heading {
     font-size: 32px; }
