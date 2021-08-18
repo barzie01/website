@@ -6,7 +6,7 @@ const input = document.getElementById('textInput');
 const btn = document.getElementById('btn');
 const phoneInput = document.getElementById('numberInput');
 const phoneBtn = document.getElementById('verifyBtn');
-let dataObject = {};
+let companiesAndCustomers = {};
 
 // Load data from JSON files and display as a table
 
@@ -21,9 +21,9 @@ const loadData = async () => {
 } 
 
 const getData = async () => {
-    dataObject = {... await loadData()};
-    createTable(dataObject.companies);
-    mergeData(dataObject);
+    companiesAndCustomers = {... await loadData()};
+    createTable(companiesAndCustomers.companies);
+    mergeData(companiesAndCustomers);
     alert("Application ready to use")
 }
 getData()
@@ -39,6 +39,7 @@ function createTable(companies) {
                 <td>${company.name}</td>
                 <td>${company.code}</td>
                 <td>${company.domain}</td>
+            </tr>
         ` 
     });
     table.innerHTML = output;
@@ -47,34 +48,31 @@ function createTable(companies) {
 // Implement table filter
 
  function filterCompany (e) {
-    const companies = dataObject.companies;
+    const companies = companiesAndCustomers.companies;
     const inputValue = e.target.value;
     table.innerHTML = '';
-    let output = '';
 
-    companies.forEach((company) => {
-        if(company.name.toLowerCase().includes(inputValue.toLowerCase())) {
-            output += 
-        `
-            <tr>
-                <td>${company.name}</td>
-                <td>${company.code}</td>
-                <td>${company.domain}</td>
-        ` 
-    table.innerHTML = output;
-        }
-    });
+    table.innerHTML = companies.reduce((tableHtml, company) => {
+        if(!company.name.toLowerCase().includes(inputValue.toLowerCase())) return tableHtml
+        tableHtml += `
+                <tr>
+                    <td>${company.name}</td>
+                    <td>${company.code}</td>
+                    <td>${company.domain}</td>
+                </tr>
+            ` 
+        return tableHtml
+    }, '')
 }
 input.addEventListener('input', filterCompany);
 
 // Merge customers and companies data
 
 function mergeData() {
-    const customers = dataObject.customers;
-    const companies = dataObject.companies;
-    let fileData = [];
 
-    fileData = customers.map((customer) => {
+    const {companies, customers} = companiesAndCustomers;
+
+    const fileData = customers.map((customer) => {
         return {
             name: customer.name,
             surname: customer.surname,
@@ -106,10 +104,8 @@ function mergeData() {
 function verifyNumber() {
     const inputValue = phoneInput.value;
     const regex = /\+\d{1,4}(\-\d{3}){3}$/;
-    if(regex.test(inputValue)) {
-        alert('Correct phone number')
-    } else {
-        alert('Incorrect phone number!')
-    }
+    const alertMessage = regex.test(inputValue) ? 'Correct phone number' : 'Incorrect phone number!'
+        alert(alertMessage)
+    
 }
 phoneBtn.addEventListener('click', verifyNumber)
