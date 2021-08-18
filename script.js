@@ -21,7 +21,7 @@ const loadData = async () => {
 } 
 
 const getData = async () => {
-    companiesAndCustomers = {... await loadData()};
+    companiesAndCustomers = await loadData();
     createTable(companiesAndCustomers.companies);
     mergeData(companiesAndCustomers);
     alert("Application ready to use")
